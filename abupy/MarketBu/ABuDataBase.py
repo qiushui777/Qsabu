@@ -34,6 +34,10 @@ class SupportMixin(object):
         if symbol is None:
             symbol = self._symbol
 
+        # Qs data here, always return true
+        if(symbol.symbol_code[:2] == "Qs"):
+            return True
+
         if isinstance(symbol, six.string_types):
             # 如果是str，使用_support_market返回的value组成字符串数组，进行成员测试
             if symbol in [market.value for market in self._support_market()]:

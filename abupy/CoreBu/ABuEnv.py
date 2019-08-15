@@ -21,7 +21,7 @@ import pandas as pd
 
 from ..CoreBu.ABuFixes import six
 
-__author__ = '阿布'
+__author__ = '阿布/秋水'
 __weixin__ = 'abu_quant'
 
 """暂时支持windows和mac os，不是windows就是mac os（不使用Darwin做判断），linux下没有完整测试"""
@@ -223,6 +223,9 @@ class EMarketSourceType(Enum):
 
     """火币 比特币，莱特币"""
     E_MARKET_SOURCE_hb_tc = 200
+
+    """ binance """
+    E_MARKET_SOURCE_binance= 201
 
 
 """默认设置数据源使用E_MARKET_SOURCE_bd"""

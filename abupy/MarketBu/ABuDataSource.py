@@ -12,7 +12,7 @@ import logging
 import numpy as np
 
 from ..MarketBu.ABuDataBase import BaseMarket
-from ..MarketBu.ABuDataFeed import BDApi, TXApi, NTApi, HBApi, SNUSApi, SNFuturesApi, SNFuturesGBApi
+from ..MarketBu.ABuDataFeed import BDApi, TXApi, NTApi, HBApi, SNUSApi, SNFuturesApi, SNFuturesGBApi, BNApi
 from .ABuSymbol import Symbol
 from .ABuSymbol import code_to_symbol
 from ..CoreBu import ABuEnv
@@ -37,7 +37,8 @@ source_dict = {EMarketSourceType.E_MARKET_SOURCE_bd.value: BDApi,
                EMarketSourceType.E_MARKET_SOURCE_sn_us.value: SNUSApi,
                EMarketSourceType.E_MARKET_SOURCE_sn_futures.value: SNFuturesApi,
                EMarketSourceType.E_MARKET_SOURCE_sn_futures_gb.value: SNFuturesGBApi,
-               EMarketSourceType.E_MARKET_SOURCE_hb_tc.value: HBApi}
+               EMarketSourceType.E_MARKET_SOURCE_hb_tc.value: HBApi,
+               EMarketSourceType.E_MARKET_SOURCE_binance.value: BNApi}
 
 
 def _calc_start_end_date(df, force_local, n_folds, start, end):

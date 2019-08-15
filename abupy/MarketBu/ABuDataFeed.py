@@ -22,7 +22,7 @@ from ..CoreBu import ABuEnv
 from ..MarketBu import ABuNetWork
 from ..MarketBu.ABuDataBase import StockBaseMarket, SupportMixin, FuturesBaseMarket, TCBaseMarket
 from ..MarketBu.ABuDataParser import BDParser, TXParser, NTParser, SNUSParser
-from ..MarketBu.ABuDataParser import SNFuturesParser, SNFuturesGBParser, HBTCParser
+from ..MarketBu.ABuDataParser import SNFuturesParser, SNFuturesGBParser, HBTCParser, BIANParser
 from ..UtilBu import ABuStrUtil, ABuDateUtil, ABuMd5
 from ..UtilBu.ABuDTUtil import catch_error
 from ..CoreBu.ABuDeprecated import AbuDeprecated
@@ -436,6 +436,36 @@ class HBApi(TCBaseMarket, SupportMixin):
         if kl_df is None:
             return None
         return TCBaseMarket._fix_kline_pd(kl_df, n_folds, start, end)
+
+    def minute(self, *args, **kwargs):
+        """分钟k线接口"""
+        raise NotImplementedError('HBApi minute NotImplementedError!')
+
+
+class BNApi(TCBaseMarket, SupportMixin):
+    """Binance数据源"""
+
+    K_NET_BASE = 'https://api.binance.com/api/v1/klines'
+
+    def __init__(self, symbol):
+        """
+        :param symbol: Symbol类型对象
+        """
+        super(BNApi, self).__init__(symbol)
+        # 设置数据源解析对象类
+        self.data_parser_cls = BIANParser
+        self.coinpair = symbol.symbol_code[3:]
+
+    def _support_market(self):
+        """只支持币类市场"""
+        return [EMarketTargetType.E_MARKET_TARGET_TC]
+
+    def kline(self, n_folds=2, start=None, end=None, interval = "1d"):
+        """日k线接口"""
+        data = ABuNetWork.get(url=BNApi.K_NET_BASE, params={"symbol":self.coinpair, "interval":interval}, 
+            timeout=K_TIME_OUT).json()
+        kl_df = self.data_parser_cls(self._symbol, data).df
+        return None
 
     def minute(self, *args, **kwargs):
         """分钟k线接口"""

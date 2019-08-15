@@ -36,6 +36,16 @@ def code_to_symbol(code, rs=True):
         # code必须是string_types
         raise TypeError('code must be string_types!!!，{} : type is {}'.format(code, type(code)))
 
+    """ qiushui 
+    if it's started with Qs,it means it's defined by me and we should
+    return the cryptocurrency symbol here
+    """ 
+    qs_flag = code[:2]
+    if(qs_flag == "Qs"):
+        market = EMarketTargetType.E_MARKET_TARGET_TC
+        sub_market = EMarketSubType.COIN
+        return Symbol(market, sub_market, code)
+
     sub_market = None
     market = None
     # 尝试获取市场信息

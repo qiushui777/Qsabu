@@ -23,7 +23,7 @@ except ImportError:
     from datetime import timedelta
 
 
-__author__ = '阿布'
+__author__ = '阿布/秋水'
 __weixin__ = 'abu_quant'
 
 
@@ -293,3 +293,12 @@ def time_seconds():
 def time_zone():
     """返回时区int值"""
     return time.timezone
+
+def fmt_epoch(epoch_time):
+    """
+    conver the unix time with milliseconds to datetime
+    https://stackoverflow.com/questions/21787496/converting-epoch-time-with-milliseconds-to-datetime
+    """
+    s, ms = divmod(epoch_time, 1000) 
+    fmt_time = time.strftime('%Y-%m-%d', time.gmtime(s))
+    return fmt_time
