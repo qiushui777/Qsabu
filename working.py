@@ -1,17 +1,24 @@
 import abupy
 from abupy import EMarketSourceType,EDataCacheType,EMarketTargetType,ABuSymbolPd,EMarketDataFetchMode,abu
+from abupy import ABuDateUtil
+import time
 
 abupy.env.g_market_source = EMarketSourceType.E_MARKET_SOURCE_binance
 abupy.env.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_NORMAL
-ABuSymbolPd.make_kl_df('Qs:ETHBTC').tail()
+print(ABuSymbolPd.make_kl_df(symbol='QsETHUSDT'))
 
 
 """
 #binance api test
 import requests
-print(requests.get(url='https://api.binance.com/api/v1/klines',params={"symbol":"ETHBTC","interval": "1d",}).text)
-"""
+import abupy
 
+print(abupy.ABuDateUtil.datestr_unixm('2018-11-27'))
+print(abupy.ABuDateUtil.fmt_epoch(1543104000000))
+#print(requests.get(url='https://api.binance.com/api/v1/klines',params={"symbol":"BTCUSDT","interval": "1d", 
+    #"startTime":1543104000000, "endTime":1543248000000}).text)
+print(requests.get(url='https://api.binance.com/api/v1/klines',params={"symbol":"BTCUSDT","interval": "1d"}).text)
+"""
 
 """
 huobi api test

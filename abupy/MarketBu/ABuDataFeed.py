@@ -454,7 +454,7 @@ class BNApi(TCBaseMarket, SupportMixin):
         super(BNApi, self).__init__(symbol)
         # 设置数据源解析对象类
         self.data_parser_cls = BIANParser
-        self.coinpair = symbol.symbol_code[3:]
+        self.coinpair = symbol.symbol_code[2:]
 
     def _support_market(self):
         """只支持币类市场"""
@@ -462,10 +462,18 @@ class BNApi(TCBaseMarket, SupportMixin):
 
     def kline(self, n_folds=2, start=None, end=None, interval = "1d"):
         """日k线接口"""
-        data = ABuNetWork.get(url=BNApi.K_NET_BASE, params={"symbol":self.coinpair, "interval":interval}, 
-            timeout=K_TIME_OUT).json()
+        startunixm = None
+        endunixm = None
+        if start is not None:
+            startunixm = ABuDateUtil.datestr_unixm(start)
+        if end is not None:
+            endunixm = ABuDateUtil.datestr_unixm(end)
+        data = ABuNetWork.get(url=BNApi.K_NET_BASE, params={"symbol":self.coinpair, "interval":interval, 
+            "startTime": startunixm, "endTime": endunixm}, timeout=K_TIME_OUT).json()
         kl_df = self.data_parser_cls(self._symbol, data).df
-        return None
+        if kl_df is None:
+            return None
+        return TCBaseMarket._fix_kline_pd(kl_df,n_folds,start,end)
 
     def minute(self, *args, **kwargs):
         """分钟k线接口"""

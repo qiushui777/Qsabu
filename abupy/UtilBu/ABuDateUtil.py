@@ -302,3 +302,11 @@ def fmt_epoch(epoch_time):
     s, ms = divmod(epoch_time, 1000) 
     fmt_time = time.strftime('%Y-%m-%d', time.gmtime(s))
     return fmt_time
+
+def datestr_unixm(datestr):
+    """
+    Binance accept the unix time with millionseconds
+    so we need to convert the str to unix time
+    https://stackoverflow.com/questions/19801727/convert-datetime-to-unix-timestamp-and-convert-it-back-in-python
+    """
+    return(int(time.mktime(str_to_datetime_fast(datestr).timetuple())*1000))
