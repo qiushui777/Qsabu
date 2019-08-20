@@ -1,15 +1,10 @@
-"""
-import abupy
-from abupy import EMarketSourceType,EDataCacheType,EMarketTargetType,ABuSymbolPd,EMarketDataFetchMode,abu
-from abupy import ABuDateUtil
-import time
+from abupy import QsCoinMkScraper
 
-abupy.env.g_market_source = EMarketSourceType.E_MARKET_SOURCE_binance
-abupy.env.g_data_fetch_mode = EMarketDataFetchMode.E_DATA_FETCH_NORMAL
-print(ABuSymbolPd.make_kl_df(symbol='QsETHUSDT'))
+scraper = QsCoinMkScraper()
+scraper.format_date('Dec 28, 2013')
 
 
-"""
+
 """
 #binance api test
 import requests
@@ -21,7 +16,7 @@ import abupy
 print(requests.get(url='https://api.binance.com/api/v1/klines',params={"symbol":"BTCUSDT","interval": "1d"}).text)
 
 
-"""
+
 #huobi api test
 import websockets
 import asyncio
@@ -35,3 +30,4 @@ async def hello():
         print(f"receive from server:{greeting}")
 
 asyncio.get_event_loop().run_until_complete(hello())
+"""
