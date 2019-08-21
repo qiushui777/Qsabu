@@ -6,6 +6,7 @@
 
 import datetime
 import os
+import time
 import requests
 import pandas as pd
 import numpy as np
@@ -37,7 +38,7 @@ class QsCoinMkScraper(object):
         :param startdate: 开始日期，格式为20130501
         :param enddate: 结束日期，格式为20130502    
         """
-        print("[qiushui log] Getting the date for " + cointype)
+        print("[qiushui log] Getting the data for " + cointype)
         if cointype not in self.support_list:
             raise Exception("Not support: " + cointype)
         self.targetcoin = cointype
@@ -86,6 +87,8 @@ class QsCoinMkScraper(object):
         """获取所有在support list 中的代币的数据"""
         for coin in self.support_list:
             self.get_kline_data(cointype=coin)
+            time.sleep(1)
+
 
     def refresh_all_kline_data(self):
         """更新所有在support list中的代币的数据"""
@@ -94,14 +97,16 @@ class QsCoinMkScraper(object):
 
     def parse_page(self,url):
         """从页面中提取出想要的数据，保存为一个DataFrame"""
-        df = pd.DataFrame(columns = ['date','open','high','low','close','volume','MarketCap'])
-        
+        df = pd.DataFrame(columns = ['open','close','high','low','volume','date','MarketCap','pre_close',
+                                    'date_week','p_change'])
+
         html = requests.get(url)
         Soup = BeautifulSoup(html.text, 'lxml')
         all_tr = Soup.find_all('tr', class_ = 'text-right')
 
         # 每个tr中包含有含有具体数据的td标签
-        for tr in all_tr:
+        td_preclose = np.nan
+        for tr in all_tr[::-1]:
             tds = tr.find_all('td')
             # 每个td标签依次对应一个数据
             td_date_index = ABuDateUtil.qs_cmformat_date(tds[0].string)
@@ -111,10 +116,15 @@ class QsCoinMkScraper(object):
             td_low = tds[3].string
             td_close = tds[4].string
             td_volume = np.nan if tds[5].string == '-' else tds[5].string
-            td_marketcap = tds[6].string
-            insert_array = np.array([td_date,td_open,td_high,td_low,td_close,td_volume,td_marketcap])
+            td_marketcap = np.nan if tds[6].string == '-' else tds[6].string
+            td_date_week = ABuDateUtil.week_of_date(td_date_index)
+            td_p_change = np.nan if td_preclose is np.nan else round((float(td_close)-float(td_preclose))/
+                                                                        (float(td_preclose)),3)
+            insert_array = np.array([td_open,td_close,td_high,td_low,td_volume,td_date,td_marketcap,td_preclose,
+                                    td_date_week,td_p_change])
+            td_preclose = td_close
             df.loc[td_date_index] = insert_array
-        return df.iloc[::-1]
+        return df
 
     def save_cache(self, datadf):
         """将获取的数据存储进cache文件夹，这里的datadf为DataFrame"""
