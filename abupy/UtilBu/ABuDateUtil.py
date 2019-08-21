@@ -9,6 +9,7 @@ from __future__ import division
 
 import datetime
 import time
+import calendar
 from datetime import datetime as dt
 
 from ..CoreBu.ABuFixes import six
@@ -310,3 +311,16 @@ def datestr_unixm(datestr):
     https://stackoverflow.com/questions/19801727/convert-datetime-to-unix-timestamp-and-convert-it-back-in-python
     """
     return(int(time.mktime(str_to_datetime_fast(datestr).timetuple())*1000))
+
+def qs_cmformat_date(datestring):
+    """
+    输入'Apr 28, 2013' 转换为 2013-04-28
+    """
+    month_day = datestring.split(',')[0]
+    year = datestring.split(',')[1].strip()
+    month = str(list(calendar.month_abbr).index(month_day.split(' ')[0]))
+    if(len(month) == 1):
+        month = '0' + month
+    day = month_day.split(' ')[1]
+    formated_date = "%s-%s-%s" % (year,month,day)
+    return(formated_date)

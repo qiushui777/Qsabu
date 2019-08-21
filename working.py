@@ -1,9 +1,11 @@
 from abupy import QsCoinMkScraper
 
 scraper = QsCoinMkScraper()
-scraper.format_date('Dec 28, 2013')
 
-
+#scraper.refresh_kline_data(refresh_cointype='bitcoin')
+#scraper.get_all_kline_data()
+#scraper.get_kline_data(cointype='tron')
+scraper.refresh_all_kline_data()
 
 """
 #binance api test
