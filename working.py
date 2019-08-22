@@ -1,5 +1,17 @@
-from abupy import QsCoinMkScraper
+from abupy import QsDataMarket,ABuMarketDrawing
 
+qsmarket = QsDataMarket()
+bitcoin = qsmarket.get_coin_df(coin='bitcoin')
+ethereum = qsmarket.get_coin_df(coin='ethereum')
+ABuMarketDrawing.plot_simple_two_stock({'btc': bitcoin, 'eth': ethereum})
+
+
+
+
+
+
+"""
+# scraper test
 scraper = QsCoinMkScraper()
 
 #scraper.refresh_kline_data(refresh_cointype='bitcoin')
@@ -7,7 +19,8 @@ scraper = QsCoinMkScraper()
 #scraper.get_kline_data(cointype='tron')
 scraper.refresh_all_kline_data()
 
-"""
+
+
 #binance api test
 import requests
 import abupy
