@@ -406,6 +406,6 @@ def plot_multi_df(multi_kl_dict):
     for i in range(len(df_lists)):
         df_lists[i] = df_lists[i] * scale_factors[i]
         plt.plot(df_lists[i], label=label_arr[i])
-    plt.legend(loc='upper right')
+    plt.legend(loc='upper left')
     plt.show()
     return
