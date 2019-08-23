@@ -356,6 +356,7 @@ def scaler_matrix(group, type_look='look_max', mean_how=False):
 
     if isinstance(group, np.ndarray):
         # 把np.ndarray转DataFrame，便统一处理
+        # [qiushui] 在这一步丢失了index，导致缩放错误，暂时还不知道原因
         group = pd.DataFrame(group)
 
     # 向前填充na，不能补0，否则如果可视化价格范围就会变大
@@ -364,6 +365,7 @@ def scaler_matrix(group, type_look='look_max', mean_how=False):
     if type_look == 'look_max':
         # 向较大的序列看齐
         group_max = group.mean(axis=0) if mean_how else group.max(axis=0)
+        #print(group.max(axis=1))
         max_v = group_max.max()
         # 计算出每个序列的放大因子
         scale_factor = max_v / group_max
@@ -461,3 +463,23 @@ def scaler_xy(x, y, type_look='look_max', mean_how=True):
     else:
         raise ValueError('type_look is error {}'.format(type_look))
     return x, y
+
+
+def scale_dfs(df_list, type_look='look_max', mean_how=False):
+    """
+    仿照scaler_matrix对多个DataFrame进行缩放
+    返回每个DataFrame需要缩放的值的list
+    """
+    if type_look == 'look_max':
+        group_max = []
+        for df in df_list:
+            group_max.append(df.max())
+        max_v = max(group_max)
+        scale_factor = [ max_v / single_max for single_max in group_max]
+    elif type_look == 'look_min':
+        group_min = []
+        for df in df_list:
+            group_min.append(df.min())
+        min_v = min(group_min)
+        scale_factor = [ min_v / single_min for single_min in group_min]
+    return(scale_factor)

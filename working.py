@@ -3,8 +3,9 @@ from abupy import QsDataMarket,ABuMarketDrawing
 qsmarket = QsDataMarket()
 bitcoin = qsmarket.get_coin_df(coin='bitcoin')
 ethereum = qsmarket.get_coin_df(coin='ethereum')
-ABuMarketDrawing.plot_simple_two_stock({'btc': bitcoin, 'eth': ethereum})
-
+litecoin = qsmarket.get_coin_df(coin='litecoin')
+#ABuMarketDrawing.plot_simple_two_stock({'btc': bitcoin, 'eth': ethereum})
+ABuMarketDrawing.plot_multi_df({'bitcoin':bitcoin,'ethereum':ethereum,'litecoin':litecoin})
 
 
 
