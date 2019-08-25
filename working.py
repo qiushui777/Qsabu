@@ -1,3 +1,10 @@
+from abupy import QsCoinMkScraper
+
+scraper = QsCoinMkScraper()
+#scraper.get_all_kline_data()
+scraper.refresh_all_kline_data()
+
+"""
 from abupy import QsDataMarket,ABuMarketDrawing
 
 qsmarket = QsDataMarket()
@@ -8,10 +15,6 @@ litecoin = qsmarket.get_coin_df(coin='litecoin')
 ABuMarketDrawing.plot_multi_df({'bitcoin':bitcoin,'ethereum':ethereum,'litecoin':litecoin})
 
 
-
-
-
-"""
 # scraper test
 scraper = QsCoinMkScraper()
 
