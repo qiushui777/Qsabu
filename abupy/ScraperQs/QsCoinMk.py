@@ -118,8 +118,8 @@ class QsCoinMkScraper(object):
             td_volume = np.nan if tds[5].string == '-' else tds[5].string
             td_marketcap = np.nan if tds[6].string == '-' else tds[6].string
             td_date_week = ABuDateUtil.week_of_date(td_date_index)
-            td_p_change = np.nan if td_preclose is np.nan else round((float(td_close)-float(td_preclose))/
-                                                                        (float(td_preclose)),3)
+            td_p_change = np.nan if td_preclose is np.nan else round(((float(td_close)-float(td_preclose))/
+                                                                        (float(td_preclose)))*100,3)
             insert_array = np.array([td_open,td_close,td_high,td_low,td_volume,td_date,td_marketcap,td_preclose,
                                     td_date_week,td_p_change])
             td_preclose = td_close
